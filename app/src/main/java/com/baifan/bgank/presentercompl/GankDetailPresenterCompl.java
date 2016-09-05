@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.baifan.bgank.entity.Gank;
+import com.baifan.bgank.entity.GankList;
 import com.baifan.bgank.entity.MeizhiList;
 import com.baifan.bgank.ipresenter.GankDetailIpresenter;
 import com.baifan.bgank.iview.GankDetailIView;
@@ -40,7 +41,7 @@ public class GankDetailPresenterCompl implements GankDetailIpresenter {
 
     }
 
-    Observer<MeizhiList> observer = new Observer<MeizhiList>() {
+    Observer<GankList> observer = new Observer<GankList>() {
         @Override
         public void onCompleted() {
 
@@ -52,10 +53,11 @@ public class GankDetailPresenterCompl implements GankDetailIpresenter {
         }
 
         @Override
-        public void onNext(MeizhiList meizhiList) {
+        public void onNext(GankList gankList) {
             mGankDetailIView.onLoaded();
             if (mList == null || mList.size() == 0) {
-
+                mList = gankList.getResults();
+                mGankDetailIView.handleSuccessGankDetail(mList);
             }
         }
     };

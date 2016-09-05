@@ -1,6 +1,7 @@
 package com.baifan.bgank.gank.api;
 
 import com.baifan.bgank.entity.Meizhi;
+import com.baifan.bgank.gank.api.api.GankDetailApi;
 import com.baifan.bgank.gank.api.api.MeizhiApi;
 
 import okhttp3.OkHttpClient;
@@ -18,20 +19,35 @@ public class GankNetwork {
 
     private static MeizhiApi meizhiApi;
 
+    private static GankDetailApi gankDetailApi;
+
     private static OkHttpClient okHttpClient = new OkHttpClient();
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
 
-    public static MeizhiApi getMeizhiApi(){
-        if(meizhiApi == null){
+    public static MeizhiApi getMeizhiApi() {
+        if (meizhiApi == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                        .client(okHttpClient)
-                        .baseUrl(BASEURL)
-                        .addConverterFactory(gsonConverterFactory)
-                        .addCallAdapterFactory(rxJavaCallAdapterFactory)
-                        .build();
+                    .client(okHttpClient)
+                    .baseUrl(BASEURL)
+                    .addConverterFactory(gsonConverterFactory)
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
             meizhiApi = retrofit.create(MeizhiApi.class);
         }
         return meizhiApi;
+    }
+
+    public static GankDetailApi getGankDetailApi() {
+        if (gankDetailApi == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(okHttpClient)
+                    .baseUrl(BASEURL)
+                    .addConverterFactory(gsonConverterFactory)
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
+            gankDetailApi = retrofit.create(GankDetailApi.class);
+        }
+        return gankDetailApi;
     }
 }
