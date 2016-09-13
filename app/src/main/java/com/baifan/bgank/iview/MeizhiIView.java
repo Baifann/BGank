@@ -17,7 +17,13 @@ public interface MeizhiIView {
 
     void initRecyclerview();
 
+    void initEvents();
+
+    void loadRefresh();
+
+    void loadMore();
+
     void onLoaded();
 
-    void initEvents();
+    void initScroll();
 }

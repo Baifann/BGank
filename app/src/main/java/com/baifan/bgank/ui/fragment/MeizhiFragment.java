@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,19 +34,24 @@ import butterknife.ButterKnife;
 /**
  * Created by baifan on 16/9/1.
  */
-public class MeizhiFragment extends Fragment implements MeizhiIView {
+public class MeizhiFragment extends Fragment implements MeizhiIView, MeizhiAdapter.OnChooseItemListener, SwipeRefreshLayout.OnRefreshListener {
     private MeizhiIpresenter mMeizhiInpresenter;
 
     @Bind(R.id.ry_meizhi)
     RecyclerView mRyMeizhi;
 
-    @Bind(R.id.ly_loading)
-    LinearLayout mLyLoading;
-
     @Bind(R.id.ly_refresh)
     SwipeRefreshLayout mLyRefresh;
 
     private MeizhiAdapter mAdapter;
+
+    private GridLayoutManager mLayoutManager;
+
+    private boolean isLoadMoreing;
+    /**
+     * 第几页
+     */
+    private int mPage = 1;
 
     public static MeizhiFragment newInstance() {
         MeizhiFragment meizhiFragment = new MeizhiFragment();
@@ -68,19 +74,18 @@ public class MeizhiFragment extends Fragment implements MeizhiIView {
 
     private void initDatas() {
         mMeizhiInpresenter = new MeizhiPeosenterCompl(this, getActivity());
-        mMeizhiInpresenter.getMeizhiList("福利", "10", "1");
     }
 
     @Override
     public void handleSuccessGetMeizhi(List<Meizhi> list) {
-        DLog.i("list:" + list.toString());
+
         mAdapter.setList(list);
     }
 
     @Override
     public void initAdatper() {
-
         mAdapter = new MeizhiAdapter(getActivity());
+        mAdapter.setOnChooseItemListener(this);
         mRyMeizhi.setAdapter(mAdapter);
     }
 
@@ -95,24 +100,79 @@ public class MeizhiFragment extends Fragment implements MeizhiIView {
         int spacing = 20; // 50px
         boolean includeEdge = false;
         mRyMeizhi.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-        GridLayoutManager staggeredGridLayoutManager = new GridLayoutManager
+        mLayoutManager = new GridLayoutManager
                 (getActivity(), 2);
-        mRyMeizhi.setLayoutManager(staggeredGridLayoutManager);
-    }
-
-    @Override
-    public void onLoaded() {
-        mLyLoading.setVisibility(View.GONE);
+        mRyMeizhi.setLayoutManager(mLayoutManager);
     }
 
     @Override
     public void initEvents() {
+        mLyRefresh.setOnRefreshListener(this);
+    }
 
+    @Override
+    public void loadRefresh() {
+        mPage = 1;
+        mLyRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                mLyRefresh.setRefreshing(true);
+                onRefresh();
+            }
+        });
+    }
+
+    @Override
+    public void loadMore() {
+        mPage++;
+        mLyRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                mLyRefresh.setRefreshing(true);
+                onRefresh();
+            }
+        });
+    }
+
+    @Override
+    public void onLoaded() {
+        isLoadMoreing = false;
+        mLyRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void initScroll() {
+        mRyMeizhi.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastitem = mLayoutManager.findLastVisibleItemPosition();
+                if (dy > 0 && lastitem > mAdapter.getItemCount() - 5 && !isLoadMoreing) {
+                    mMeizhiInpresenter.loadMore();
+                    isLoadMoreing = true;
+                }
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         mMeizhiInpresenter.destroy();
         super.onDestroy();
+    }
+
+    @Override
+    public void onItemClick(int position, View v) {
+        mMeizhiInpresenter.onItemClick(position, v);
+    }
+
+    @Override
+    public void onRefresh() {
+        mMeizhiInpresenter.getMeizhiList("福利", "10", mPage + "");
     }
 }

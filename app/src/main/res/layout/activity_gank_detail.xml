@@ -5,30 +5,156 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.design.widget.CollapsingToolbarLayout
-        android:id="@+id/colToobarLayout"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coorLy"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:expandedTitleMarginBottom="30dp"
-        app:expandedTitleMarginEnd="30dp"
-        app:expandedTitleMarginStart="30dp"
-        app:expandedTitleMarginTop="30dp"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/img_meizhi"
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/colToobarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:title="@null">
+
+                <ImageView
+                    android:id="@+id/img_meizhi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:transitionName="@string/transition_meizhi"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="top"
+                    android:minHeight="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/Theme.AppCompat.Light"
+                    app:titleMarginTop="15dp" />
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/sv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/Theme.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-    </android.support.design.widget.CollapsingToolbarLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:id="@+id/ly_android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_105533"
+                    android:visibility="gone">
+
+                    <com.baifan.bgank.view.ScrollListView
+                        android:id="@+id/lv_android"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_ios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_105533"
+                    android:visibility="gone">
+
+                    <com.baifan.bgank.view.ScrollListView
+                        android:id="@+id/lv_iOS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_web"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_105533"
+                    android:visibility="gone">
+
+                    <com.baifan.bgank.view.ScrollListView
+                        android:id="@+id/lv_web"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_resource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_105533"
+                    android:visibility="gone">
+
+                    <com.baifan.bgank.view.ScrollListView
+                        android:id="@+id/lv_resource"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_xia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_105533"
+                    android:visibility="gone">
+
+                    <com.baifan.bgank.view.ScrollListView
+                        android:id="@+id/lv_xia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_app"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_105533"
+                    android:visibility="gone">
+
+                    <com.baifan.bgank.view.ScrollListView
+                        android:id="@+id/lv_app"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ly_vedio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_105533"
+                    android:visibility="gone">
+
+                    <com.baifan.bgank.view.ScrollListView
+                        android:id="@+id/lv_vedio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include
+        layout="@layout/include_progress"
+        android:visibility="gone" />
+
 </LinearLayout>

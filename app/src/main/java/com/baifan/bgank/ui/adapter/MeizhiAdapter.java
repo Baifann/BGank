@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.baifan.bgank.R;
 import com.baifan.bgank.entity.Meizhi;
@@ -27,10 +28,14 @@ public class MeizhiAdapter extends RecyclerView.Adapter<MeizhiAdapter.MyHolder> 
     private List<Integer> mHeightList = new ArrayList<>();
 
     public interface OnChooseItemListener {
-        void onItemClick(int position);
+        void onItemClick(int position, View v);
     }
 
     private OnChooseItemListener mListener;
+
+    public void setOnChooseItemListener(OnChooseItemListener listener) {
+        mListener = listener;
+    }
 
     public MeizhiAdapter(Context context) {
         mContext = context;
@@ -66,9 +71,11 @@ public class MeizhiAdapter extends RecyclerView.Adapter<MeizhiAdapter.MyHolder> 
 //        holder.mImgMeizhi.setLayoutParams(layoutParams);
 
         fillData(meizhi, holder);
+        handleClick(holder);
     }
 
     private void fillData(Meizhi meizhi, MyHolder holder) {
+        holder.mTvTitle.setText(meizhi.getDesc());
         ImageLoaderUtil.loadImage(meizhi.getUrl(), holder.mImgMeizhi);
     }
 
@@ -77,7 +84,7 @@ public class MeizhiAdapter extends RecyclerView.Adapter<MeizhiAdapter.MyHolder> 
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.onItemClick(holder.position);
+                    mListener.onItemClick(holder.position, holder.mImgMeizhi);
                 }
             }
         });
@@ -91,6 +98,9 @@ public class MeizhiAdapter extends RecyclerView.Adapter<MeizhiAdapter.MyHolder> 
     class MyHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.img_meizhi)
         ImageView mImgMeizhi;
+
+        @Bind(R.id.tv_title)
+        TextView mTvTitle;
 
         int position;
 

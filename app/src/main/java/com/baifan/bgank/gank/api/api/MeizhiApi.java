@@ -10,6 +10,7 @@ import rx.Observable;
  * Created by baifan on 16/9/1.
  */
 public interface MeizhiApi {
+//    @GET("search/query/listview/category/{type}/count/{pageSize}/page/{page}")
     @GET("data/{type}/{pageSize}/{page}")
     Observable<MeizhiList> getMeizhi(@Path("type") String type, @Path("pageSize") String pageSize, @Path("page") String page);
 }

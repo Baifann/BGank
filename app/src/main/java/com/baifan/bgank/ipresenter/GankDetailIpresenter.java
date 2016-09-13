@@ -9,4 +9,6 @@ public interface GankDetailIpresenter {
     void destroy();
 
     void getDataFromIntent(Intent intent);
+
+    void goToWebViewActivity(String url);
 }
